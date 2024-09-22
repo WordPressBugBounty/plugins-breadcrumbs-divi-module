@@ -1,0 +1,163 @@
+# Copyright (C) 2024 learnhowwp.com
+# This file is distributed under the GPL2.
+msgid ""
+msgstr ""
+"Project-Id-Version: Breadcrumbs Divi Module 1.2.3\n"
+"Report-Msgid-Bugs-To: "
+"https://wordpress.org/support/plugin/breadcrumbs-divi-module\n"
+"POT-Creation-Date: 2024-08-10 16:07:14+00:00\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"PO-Revision-Date: 2024-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: en\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Poedit-Country: United States\n"
+"X-Poedit-SourceCharset: UTF-8\n"
+"X-Poedit-KeywordsList: "
+"__;_e;_x:1,2c;_ex:1,2c;_n:1,2;_nx:1,2,4c;_n_noop:1,2;_nx_noop:1,2,3c;esc_"
+"attr__;esc_html__;esc_attr_e;esc_html_e;esc_attr_x:1,2c;esc_html_x:1,2c;\n"
+"X-Poedit-Basepath: ../\n"
+"X-Poedit-SearchPath-0: .\n"
+"X-Poedit-Bookmarks: \n"
+"X-Textdomain-Support: yes\n"
+"X-Generator: grunt-wp-i18n1.0.2\n"
+
+#: divi-breadcrumbs.php:233
+msgid "Author archive for "
+msgstr ""
+
+#: divi-breadcrumbs.php:281
+msgid "Search query for: "
+msgstr ""
+
+#: divi-breadcrumbs.php:286
+msgid "Error 404"
+msgstr ""
+
+#: divi-breadcrumbs.php:315
+msgid " ( Page %s )"
+msgstr ""
+
+#: divi-breadcrumbs.php:355
+msgid ""
+"The Divi Breadcrums Module needs the Divi Theme or the Divi Plugin to "
+"function"
+msgstr ""
+
+#: divi-breadcrumbs.php:368
+msgid "Rate Plugin"
+msgstr ""
+
+#: divi-breadcrumbs.php:369
+msgid "More Divi Plugins"
+msgstr ""
+
+#: includes/modules/DiviBreadcrumbs/DiviBreadcrumbs.php:16
+msgid "Breadcrumbs"
+msgstr ""
+
+#: includes/modules/DiviBreadcrumbs/DiviBreadcrumbs.php:27
+msgid "Home"
+msgstr ""
+
+#: includes/modules/DiviBreadcrumbs/DiviBreadcrumbs.php:28
+msgid "Home Text"
+msgstr ""
+
+#: includes/modules/DiviBreadcrumbs/DiviBreadcrumbs.php:31
+msgid "The default Home text in the Breadcrumbs"
+msgstr ""
+
+#: includes/modules/DiviBreadcrumbs/DiviBreadcrumbs.php:35
+msgid "Before Text"
+msgstr ""
+
+#: includes/modules/DiviBreadcrumbs/DiviBreadcrumbs.php:38
+msgid "The text before the Breadcrumbs"
+msgstr ""
+
+#: includes/modules/DiviBreadcrumbs/DiviBreadcrumbs.php:42
+msgid "Separator Icon"
+msgstr ""
+
+#: includes/modules/DiviBreadcrumbs/DiviBreadcrumbs.php:48
+#: includes/modules/DiviBreadcrumbs/DiviBreadcrumbs.php:67
+msgid "Choose the icon for the separator."
+msgstr ""
+
+#: includes/modules/DiviBreadcrumbs/DiviBreadcrumbs.php:51
+msgid "Add Before Icon"
+msgstr ""
+
+#: includes/modules/DiviBreadcrumbs/DiviBreadcrumbs.php:56
+#: includes/modules/DiviBreadcrumbs/DiviBreadcrumbs.php:78
+msgid "No"
+msgstr ""
+
+#: includes/modules/DiviBreadcrumbs/DiviBreadcrumbs.php:57
+#: includes/modules/DiviBreadcrumbs/DiviBreadcrumbs.php:79
+msgid "Yes"
+msgstr ""
+
+#: includes/modules/DiviBreadcrumbs/DiviBreadcrumbs.php:61
+msgid "Before Icon"
+msgstr ""
+
+#: includes/modules/DiviBreadcrumbs/DiviBreadcrumbs.php:73
+msgid "Use Custom Home Link"
+msgstr ""
+
+#: includes/modules/DiviBreadcrumbs/DiviBreadcrumbs.php:83
+msgid "Custom Home Link"
+msgstr ""
+
+#: includes/modules/DiviBreadcrumbs/DiviBreadcrumbs.php:87
+msgid "Add a custom link for the Home item in the breadcrumbs."
+msgstr ""
+
+#: includes/modules/DiviBreadcrumbs/DiviBreadcrumbs.php:93
+msgid "Link Color"
+msgstr ""
+
+#: includes/modules/DiviBreadcrumbs/DiviBreadcrumbs.php:95
+msgid "Here you can define a custom color for the links in the breadcrumbs."
+msgstr ""
+
+#: includes/modules/DiviBreadcrumbs/DiviBreadcrumbs.php:101
+msgid "Separator Color"
+msgstr ""
+
+#: includes/modules/DiviBreadcrumbs/DiviBreadcrumbs.php:103
+msgid "Here you can define a custom color for the Separator in the breadcrumbs."
+msgstr ""
+
+#: includes/modules/DiviBreadcrumbs/DiviBreadcrumbs.php:108
+msgid "Current Text Color"
+msgstr ""
+
+#: includes/modules/DiviBreadcrumbs/DiviBreadcrumbs.php:110
+msgid "Here you can define a custom color for the Current Text in the breadcrumbs."
+msgstr ""
+
+#. Plugin Name of the plugin/theme
+msgid "Breadcrumbs Divi Module"
+msgstr ""
+
+#. Plugin URI of the plugin/theme
+msgid "http://www.learnhowwp.com/divi-breadcrumbs-module"
+msgstr ""
+
+#. Description of the plugin/theme
+msgid "The plugin adds a new module, the Breadcrumbs module in the Divi Builder"
+msgstr ""
+
+#. Author of the plugin/theme
+msgid "learnhowwp.com"
+msgstr ""
+
+#. Author URI of the plugin/theme
+msgid "http://www.learnhowwp.com"
+msgstr ""
