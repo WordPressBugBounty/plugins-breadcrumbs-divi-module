@@ -3,7 +3,7 @@
 Plugin Name: Breadcrumbs Divi Module
 Plugin URI:  http://www.learnhowwp.com/divi-breadcrumbs-module
 Description: The plugin adds a new module, the Breadcrumbs module in the Divi Builder
-Version:     1.2.3
+Version:     1.2.4
 Author:      learnhowwp.com
 Author URI:  http://www.learnhowwp.com
 License:     GPL2

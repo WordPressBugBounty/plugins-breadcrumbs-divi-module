@@ -2,9 +2,9 @@
 Contributors: themeythemes
 Tags: divi, divi breadcrumbs, breadcrumbs
 Requires at least: 5.0
-Tested up to: 6.6
-Requires PHP: 5.6
-Stable tag: 1.2.3
+Tested up to: 6.9
+Requires PHP: 8.0
+Stable tag: 1.2.4
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -16,12 +16,12 @@ The Divi Breadcrumbs plugin enhances your website by adding a customizable Bread
 
 # Features
 
-* **Visual Builder Supported**: Enjoy seamless integration with Divi’s Visual Builder. You can drag and drop the Breadcrumbs module into your layout.
+* **Visual Builder Supported**: Enjoy seamless integration with Divi's Visual Builder. You can drag and drop the Breadcrumbs module into your layout.
 * **Customizable Home Text**: Define your own text for the home link in the breadcrumbs, offering more flexibility in how you label the starting point.
 * **Before Text Option**: Add a custom text that appears before the breadcrumbs, providing additional context to your breadcrumbs.
-* **Icon Options**: Choose from Divi’s icon library to use as the separator between breadcrumb links. You can also add a custom icon before the breadcrumbs to further personalize their appearance.
+* **Icon Options**: Choose from Divi's icon library to use as the separator between breadcrumb links. You can also add a custom icon before the breadcrumbs to further personalize their appearance.
 * **Custom Home Link**: If you need to link the home breadcrumb to a custom URL, this option allows you to do so.
-* **Color Customization**: Tailor the colors of your breadcrumbs to align with your site’s design:
+* **Color Customization**: Tailor the colors of your breadcrumbs to align with your site's design:
   * **Link Color**: Set a custom color for breadcrumb links and define a different color for the hover state, ensuring your breadcrumbs.
   * **Separator Color**: Customize the color of the separator icon.
   * **Current Text Color**: Specify a color for the text of the current page, helping users easily identify their current location.
@@ -89,6 +89,9 @@ If you don't see the breadcrumbs on your page, it could be because there are no 
 This is a free plugin and it comes with a set number of features. If you are unable to find a specific feature or setting, it is likely that it was not included in the initial development of the plugin. In such cases, please feel free to open a feature request on the support page. All the features provided by this plugin are listed in the plugin description.
 
 == Changelog ==
+
+= 1.2.4 =
+* Fixed icons displaying broken characters.
 
 = 1.2.3 =
 * Fixed icon is deprecated warning

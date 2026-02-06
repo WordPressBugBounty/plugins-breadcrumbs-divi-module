@@ -145,7 +145,7 @@ class LWP_DiviBreadcrumbs extends ET_Builder_Module {
 		if($font_icon=='')	//If an Icon is not set then use the default icon
 			$font_icon='%%24%%';
 
-		$separator_icon=esc_attr( et_pb_process_font_icon($font_icon));	//Processing the Breacrumbs Icon
+		$separator_icon = esc_attr(  html_entity_decode( et_pb_process_font_icon ( $font_icon ), ENT_QUOTES, 'UTF-8') );	//Processing the Breacrumbs Icon
 
 		$icon_selector = '%%order_class%% .separator';
 		// Font Icon Styles.
@@ -164,7 +164,7 @@ class LWP_DiviBreadcrumbs extends ET_Builder_Module {
 		);
 
 		if($before_icon!=''){
-			$before_icon=esc_attr( et_pb_process_font_icon($before_icon));	//Processing the Before Icon
+			$before_icon = esc_attr(  html_entity_decode( et_pb_process_font_icon ( $before_icon ), ENT_QUOTES, 'UTF-8') );	//Processing the Before Icon
 			$before_html=sprintf('<span class="before-icon et-pb-icon">%1$s</span>',$before_icon);
 
 			$icon_selector = '%%order_class%% .before-icon';

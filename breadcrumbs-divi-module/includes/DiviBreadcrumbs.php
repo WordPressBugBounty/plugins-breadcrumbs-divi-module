@@ -27,7 +27,7 @@ class LWP_DiviBreadcrumbsClass extends DiviExtension {
 	 *
 	 * @var string
 	 */
-	public $version = '1.2.2';
+	public $version = '1.2.4';
 
 	/**
 	 * LWP_DiviBreadcrumbs constructor.
