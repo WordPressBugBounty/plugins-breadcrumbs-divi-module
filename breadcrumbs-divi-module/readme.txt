@@ -4,7 +4,7 @@ Tags: divi, divi breadcrumbs, breadcrumbs
 Requires at least: 5.0
 Tested up to: 6.9
 Requires PHP: 8.0
-Stable tag: 1.2.4
+Stable tag: 2.0.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -88,7 +88,14 @@ If you don't see the breadcrumbs on your page, it could be because there are no 
 
 This is a free plugin and it comes with a set number of features. If you are unable to find a specific feature or setting, it is likely that it was not included in the initial development of the plugin. In such cases, please feel free to open a feature request on the support page. All the features provided by this plugin are listed in the plugin description.
 
+= Does this plugin support Divi 5? =
+
+Yes, as of version 2.0.0, the Breadcrumbs Divi Module supports both Divi 4 and Divi 5. You can use the module in either version of the Divi Builder.
+
 == Changelog ==
+
+= 2.0.0 =
+* Added Divi 5 module implementation with Visual Builder and frontend rendering support.
 
 = 1.2.4 =
 * Fixed icons displaying broken characters.

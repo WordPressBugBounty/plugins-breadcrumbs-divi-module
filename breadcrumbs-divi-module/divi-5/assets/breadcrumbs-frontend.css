@@ -1,0 +1,12 @@
+/*
+ * Breadcrumbs Divi 5 — frontend-only icon alignment.
+ * Enqueued only when the lwp/breadcrumbs block is on the page.
+ */
+
+.et-db #et-boc .et-l .lwp-breadcrumbs .et-pb-icon.separator,
+.lwp-breadcrumbs .et-pb-icon.separator,
+.et-db #et-boc .et-l .lwp-breadcrumbs .et-pb-icon.before-icon,
+.lwp-breadcrumbs .et-pb-icon.before-icon {
+	font-size: unset;
+	vertical-align: middle;
+}

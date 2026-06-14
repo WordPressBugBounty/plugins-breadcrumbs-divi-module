@@ -3,7 +3,7 @@
 Plugin Name: Breadcrumbs Divi Module
 Plugin URI:  http://www.learnhowwp.com/divi-breadcrumbs-module
 Description: The plugin adds a new module, the Breadcrumbs module in the Divi Builder
-Version:     1.2.4
+Version:     2.0.0
 Author:      learnhowwp.com
 Author URI:  http://www.learnhowwp.com
 License:     GPL2
@@ -25,6 +25,269 @@ You should have received a copy of the GNU General Public License
 along with Divi Breadcrumbs. If not, see https://www.gnu.org/licenses/gpl-2.0.html.
 */
 
+
+/**
+ * Plugin path and URL constants.
+ *
+ * @since 2.0.0
+ */
+if ( ! defined( 'LWP_BREADCRUMBS_PATH' ) ) {
+	define( 'LWP_BREADCRUMBS_PATH', plugin_dir_path( __FILE__ ) );
+}
+if ( ! defined( 'LWP_BREADCRUMBS_URL' ) ) {
+	define( 'LWP_BREADCRUMBS_URL', plugin_dir_url( __FILE__ ) );
+}
+
+/**
+ * Load Divi 5 module support when Divi 5 files are present.
+ *
+ * Must run at plugin load time (no hook) so the action callback registered
+ * inside server/index.php is in place before Divi fires
+ * 'divi_module_library_modules_dependency_tree' at init priority 0.
+ *
+ * et_builder_d5_enabled() is defined by the Divi theme (functions.php), which
+ * loads AFTER plugins_loaded — so we cannot check it here. Instead we guard by
+ * checking whether the D5 DependencyInterface file exists on disk, which is a
+ * reliable proxy for "Divi 5 is installed". The actual D5-enabled check is
+ * deferred to inside the dependency-tree action callback.
+ *
+ * Uses get_template_directory() (parent theme when a child is active) instead
+ * of ABSPATH . 'wp-content/...' so custom WP_CONTENT_DIR installs resolve correctly.
+ *
+ * @since 2.0.0
+ */
+$lwp_breadcrumbs_divi_d5_dependency = trailingslashit( get_template_directory() ) . 'includes/builder-5/server/Framework/DependencyManagement/Interfaces/DependencyInterface.php';
+
+if ( file_exists( $lwp_breadcrumbs_divi_d5_dependency ) ) {
+	require_once LWP_BREADCRUMBS_PATH . 'divi-5/server/index.php';
+}
+
+/**
+ * Enqueue Divi 5 Visual Builder assets.
+ *
+ * The divi_visual_builder_assets_before_enqueue_scripts hook only fires
+ * inside the VB, so the et_builder_d5_enabled() guard here is a safety net.
+ *
+ * @since 2.0.0
+ */
+function lwp_breadcrumbs_d5_enqueue_vb_assets() {
+	if ( ! function_exists( 'et_builder_d5_enabled' ) || ! et_builder_d5_enabled() ) {
+		return;
+	}
+
+	if ( ! class_exists( \ET\Builder\VisualBuilder\Assets\PackageBuildManager::class ) ) {
+		return;
+	}
+
+	\ET\Builder\VisualBuilder\Assets\PackageBuildManager::register_package_build(
+		array(
+			'name'    => 'lwp-breadcrumbs-d5-vb',
+			'version' => '2.0.0',
+			'script'  => array(
+				'src'                => LWP_BREADCRUMBS_URL . 'divi-5/visual-builder/build/breadcrumbs-divi.js',
+				'deps'               => array(
+					'react',
+					'divi-module-library',
+					'wp-hooks',
+				),
+				'enqueue_top_window' => false,
+				'enqueue_app_window' => true,
+			),
+		)
+	);
+}
+add_action( 'divi_visual_builder_assets_before_enqueue_scripts', 'lwp_breadcrumbs_d5_enqueue_vb_assets' );
+
+/**
+ * Collect post + Theme Builder layout content for detecting the Divi 5 breadcrumbs block.
+ *
+ * Mirrors the content sources Dynamic Assets uses (main post + active TB templates).
+ *
+ * @since 2.0.0
+ * @return string Combined block editor content blobs.
+ */
+function lwp_breadcrumbs_get_combined_page_builder_content() {
+	$parts = array();
+
+	$post_id = get_queried_object_id();
+	if ( $post_id > 0 ) {
+		$post = get_post( $post_id );
+        if ( $post instanceof \WP_Post && is_string( $post->post_content ) && '' !== $post->post_content ) {
+			$parts[] = $post->post_content;
+		}
+	}
+
+	if ( class_exists( '\ET\Builder\FrontEnd\Assets\DynamicAssetsUtils' ) ) {
+		$tb_ids = \ET\Builder\FrontEnd\Assets\DynamicAssetsUtils::get_theme_builder_template_ids();
+		foreach ( $tb_ids as $tb_id ) {
+			$tb_post = get_post( (int) $tb_id );
+            if ( $tb_post instanceof \WP_Post && is_string( $tb_post->post_content ) && '' !== $tb_post->post_content ) {
+				$parts[] = $tb_post->post_content;
+			}
+		}
+	}
+
+	return implode( "\n", $parts );
+}
+
+/**
+ * Whether a content string references the Divi 5 Breadcrumbs block.
+ *
+ * @since 2.0.0
+ * @param string $blob Post / layout content.
+ * @return bool
+ */
+function lwp_breadcrumbs_content_has_d5_block( $blob ) {
+	if ( ! is_string( $blob ) || '' === $blob ) {
+		return false;
+	}
+
+	return false !== strpos( $blob, 'lwp/breadcrumbs' )
+		|| false !== strpos( $blob, 'lwp\\/breadcrumbs' );
+}
+
+/**
+ * Whether rendered Divi content on this request includes the `lwp/breadcrumbs` block.
+ *
+ * @since 2.0.0
+ * @return bool
+ */
+function lwp_breadcrumbs_page_uses_d5_module() {
+    static $has_module = null;
+
+    if ( null !== $has_module ) {
+        return $has_module;
+    }
+
+	if ( ! function_exists( 'et_builder_d5_enabled' ) || ! et_builder_d5_enabled() ) {
+        $has_module = false;
+        return $has_module;
+	}
+
+	$blob = lwp_breadcrumbs_get_combined_page_builder_content();
+
+    $has_module = lwp_breadcrumbs_content_has_d5_block( $blob );
+
+    return $has_module;
+}
+
+/**
+ * Return filesystem or URL prefix for Divi dynamic icon CSS (Divi 5).
+ *
+ * @since 2.0.0
+ * @param bool $url Whether to return a URL (true) or filesystem path (false).
+ * @return string
+ */
+function lwp_breadcrumbs_d5_get_dynamic_assets_path( $url = false ) {
+	if ( class_exists( '\ET\Builder\FrontEnd\Assets\DynamicAssetsUtils' ) ) {
+		return \ET\Builder\FrontEnd\Assets\DynamicAssetsUtils::get_dynamic_assets_path( (bool) $url );
+	}
+
+	return '';
+}
+
+/**
+ * Ensure Divi icon font CSS is included in Dynamic Assets when the Breadcrumbs module is present.
+ *
+ * Per Divi docs: https://dev.elegantthemes.com/docs/tutorials/module/advanced/custom-dynamic-assets/modifying-dynamic-assets/
+ * use `divi_frontend_assets_dynamic_assets_global_assets_list` and
+ * `divi_frontend_assets_dynamic_assets_late_global_assets_list` with the same callback.
+ *
+ * Important: these filters run only while Divi is **generating** merged dynamic CSS (cache miss
+ * or stale cache). On a cache hit, generation is skipped and filters do not run — see
+ * `lwp_breadcrumbs_d5_enqueue_frontend_assets()` for a reliable frontend enqueue.
+ *
+ * @since 2.0.0
+ * @param array $global_asset_list Current global assets list (early or late).
+ * @param array $assets_args       Arguments; may include `assets_prefix`.
+ * @param mixed $instance          DynamicAssets / ListBuilder instance (unused).
+ * @return array
+ */
+function lwp_breadcrumbs_d5_merge_icon_dynamic_assets( $global_asset_list, $assets_args, $instance ) { // phpcs:ignore Generic.CodeAnalysis.UnusedFunctionParameter.FoundAfterLastUsed
+	if ( ! is_array( $global_asset_list ) || ! is_array( $assets_args ) ) {
+		return $global_asset_list;
+	}
+
+	if ( ! lwp_breadcrumbs_page_uses_d5_module() ) {
+		return $global_asset_list;
+	}
+
+	$prefix = isset( $assets_args['assets_prefix'] ) ? (string) $assets_args['assets_prefix'] : '';
+	if ( '' === $prefix ) {
+		$prefix = lwp_breadcrumbs_d5_get_dynamic_assets_path( false );
+	}
+	if ( '' === $prefix ) {
+		return $global_asset_list;
+	}
+
+	// Full ETmodules + Font Awesome packs (same asset keys & paths as Divi core).
+	unset( $global_asset_list['et_icons_base'], $global_asset_list['et_icons_social'] );
+	$global_asset_list['et_icons_all'] = array(
+		'css' => $prefix . '/css/icons_all.css',
+	);
+	$global_asset_list['et_icons_fa']  = array(
+		'css' => $prefix . '/css/icons_fa_all.css',
+	);
+
+	return $global_asset_list;
+}
+add_filter( 'divi_frontend_assets_dynamic_assets_global_assets_list', 'lwp_breadcrumbs_d5_merge_icon_dynamic_assets', 10, 3 );
+add_filter( 'divi_frontend_assets_dynamic_assets_late_global_assets_list', 'lwp_breadcrumbs_d5_merge_icon_dynamic_assets', 10, 3 );
+
+/**
+ * Enqueue Divi icon fonts and plugin frontend CSS when the D5 Breadcrumbs block is used.
+ *
+ * Guarded by `lwp_breadcrumbs_page_uses_d5_module()` so nothing runs on unrelated pages.
+ *
+ * When Divi’s dynamic asset cache is valid, it skips regeneration — so filter hooks on the global
+ * asset list never run and icon CSS may be missing from the merged file. Enqueuing the same CSS
+ * files Divi uses guarantees icons render. Duplicate @font-face rules are harmless if both run.
+ *
+ * @since 2.0.0
+ * @return void
+ */
+function lwp_breadcrumbs_d5_enqueue_frontend_assets() {
+	if ( is_admin() ) {
+		return;
+	}
+	if ( ! function_exists( 'et_builder_d5_enabled' ) || ! et_builder_d5_enabled() ) {
+		return;
+	}
+	if ( ! lwp_breadcrumbs_page_uses_d5_module() ) {
+		return;
+	}
+
+	$base_url = lwp_breadcrumbs_d5_get_dynamic_assets_path( true );
+	if ( '' === $base_url ) {
+		return;
+	}
+
+	$et_ver = defined( 'ET_BUILDER_PRODUCT_VERSION' ) ? ET_BUILDER_PRODUCT_VERSION : '2.0.0';
+
+	wp_enqueue_style(
+		'lwp-breadcrumbs-d5-icons-all',
+		$base_url . '/css/icons_all.css',
+		array(),
+		$et_ver
+	);
+	wp_enqueue_style(
+		'lwp-breadcrumbs-d5-icons-fa',
+		$base_url . '/css/icons_fa_all.css',
+		array(),
+		$et_ver
+	);
+
+	$module_css_path = LWP_BREADCRUMBS_PATH . 'divi-5/assets/breadcrumbs-frontend.css';
+	$module_css_ver  = file_exists( $module_css_path ) ? (string) filemtime( $module_css_path ) : '2.0.0';
+
+	wp_enqueue_style(
+		'lwp-breadcrumbs-d5-module',
+		LWP_BREADCRUMBS_URL . 'divi-5/assets/breadcrumbs-frontend.css',
+		array(),
+		$module_css_ver
+	);
+}
+add_action( 'wp_enqueue_scripts', 'lwp_breadcrumbs_d5_enqueue_frontend_assets', 20 );
 
 if ( ! function_exists( 'lwp_initialize_extension' ) ):
 /**
